@@ -11,10 +11,17 @@ jobs:
     - uses: actions/checkout@v1
     - name: Install R
       run: choco install r.project
+    - name: R Options
+      shell: bash
+      run: |-
+        echo 'MAKE=make -j2' >> ~/.Renviron
+        mkdir ~/R_LIB
+        echo 'R_LIBS=~/R_LIB' >> ~/.Renviron
+        echo 'options(repos = c(CRAN = "https://cloud.r-project.org"))' >> ~/.Rprofile
     - name: Install shiny
       shell: cmd
       run: |-
         "C:\Program Files\R\R-3.6.1\bin\Rscript.exe" -e "install.packages('shiny')"
     - name: Verify shiny is installed
       run: |-
-        C:\\Program\ Files\\R\\R-3.6.1\\bin\\Rscript.exe -e 'print(asNamespace("shiny"))'
+        "C:\Program Files\R\R-3.6.1\bin\Rscript.exe" -e "print(asNamespace('shiny'))"
