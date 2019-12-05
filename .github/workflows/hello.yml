@@ -13,7 +13,7 @@ jobs:
       run: choco install r.project
     - name: Install shiny
       run: |-
-        'C:\Program Files\R\R-3.6.1\bin\Rscript.exe' -e 'install.packages("shiny")'
+        "C:\Program Files\R\R-3.6.1\bin\Rscript.exe" -e 'install.packages("shiny")'
     - name: Verify shiny is installed
       run: |-
-        'C:\Program Files\R\R-3.4.3\bin\Rscript.exe' -e 'print(asNamespace("shiny"))'
+        C:\\Program\ Files\\R\\R-3.6.1\\bin\\Rscript.exe -e 'print(asNamespace("shiny"))'
