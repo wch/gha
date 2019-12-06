@@ -34,7 +34,7 @@ jobs:
           echo 'R_LIBS=~/R_LIB' >> .Renviron
           echo 'options(repos = c(CRAN = "https://cloud.r-project.org"))' >> .Rprofile
 
-     - name: Cache R library
+      - name: Cache R library
         if: runner.os != 'Windows'
         uses: actions/cache@v1
         with:
