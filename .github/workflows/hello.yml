@@ -48,16 +48,10 @@ jobs:
       - name: Display PATH
         run: $env:path -split ";"
 
-      - name: Install shiny
-        run: Rscript -e "install.packages('shiny')"
-
-      - name: Verify shiny is installed
-        run: Rscript -e "print(asNamespace('shiny'))"
-
-      - name: Install Package Dependencies
+      - name: Install Packages
         run: |-
           Rscript -e "install.packages('remotes')"
-          Rscript -e "remotes::install_cran(c('devtools', 'shiny', 'shinytest'))"
+          Rscript -e "remotes::install_cran(c('shiny', 'shinytest'))"
 
       - name: Install shinytest system dependencies
         run: |-
@@ -68,11 +62,8 @@ jobs:
           Rscript -e "library(shinytest); expect_pass(testApp('001-hello'))"
           Rscript -e "shinytest::viewTestDiff('001-hello')"
 
-      - name: Create results artifact
-        run: tar cvf 001-hello.tar 001-hello/
-
       - name: Upload test results
         uses: actions/upload-artifact@v1
         with:
             name: 001-hello-results
-            path: 001-hello.tar
+            path: 001-hello
