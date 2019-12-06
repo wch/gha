@@ -22,9 +22,6 @@ jobs:
 
       - uses: actions/checkout@v1
 
-      - name: Display PATH
-        run: $env:path -split ";"
-
       - uses: r-lib/actions/setup-r@master
         with:
           r-version: ${{ matrix.config.r }}
@@ -56,6 +53,10 @@ jobs:
         run: |-
           Rscript -e "install.packages('remotes')"
           Rscript -e "remotes::install_cran(c('devtools', 'shiny', 'shinytest'))"
+
+      - name: Install shinytest system dependencies
+        run: |-
+          Rscript -e "shinytest::installDependencies()"
 
       - name: Run shinytest
         run: |-
