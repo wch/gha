@@ -61,4 +61,4 @@ jobs:
 
       - name: Run shinytest
         run: |-
-          Rscript -e "expect_pass(shinytest::testApp('001-hello'))"
+          Rscript -e "library(shinytest); expect_pass(testApp('001-hello'))"
