@@ -69,6 +69,7 @@ jobs:
         run: tar cvf 001-hello.tar 001-hello/
 
       - name: Upload test results
+        uses: actions/upload-artifact@v1
         if: failure()
         with:
             name: 001-hello-results
