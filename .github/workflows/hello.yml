@@ -36,5 +36,19 @@ jobs:
         "C:\Program Files\R\R-3.6.1\bin\Rscript.exe" -e "install.packages('shiny')"
     
     - name: Verify shiny is installed
+      shell: cmd
       run: |-
         "C:\Program Files\R\R-3.6.1\bin\Rscript.exe" -e "print(asNamespace('shiny'))"
+
+    - name: Install Package Dependencies
+      shell: cmd
+      run: |-
+        "C:\Program Files\R\R-3.6.1\bin\Rscript.exe" -e "install.packages('remotes')"
+        "C:\Program Files\R\R-3.6.1\bin\Rscript.exe" -e "remotes::install_deps(dependencies = TRUE)"
+        "C:\Program Files\R\R-3.6.1\bin\Rscript.exe" -e "remotes::install_cran('devtools')"
+
+    - name: "devtools::check()"
+      shell: cmd
+      run: |-
+        "C:\Program Files\R\R-3.6.1\bin\Rscript.exe" -e "devtools::check(error_on = 'note', run_dont_test = TRUE, cran = TRUE, remote = FALSE)"
+
