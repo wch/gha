@@ -65,12 +65,10 @@ jobs:
           Rscript -e "shinytest::viewTestDiff('001-hello')"
 
       - name: Create results artifact
-        if: failure()
         run: tar cvf 001-hello.tar 001-hello/
 
       - name: Upload test results
         uses: actions/upload-artifact@v1
-        if: failure()
         with:
             name: 001-hello-results
             path: 001-hello.tar
