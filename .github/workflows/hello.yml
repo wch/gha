@@ -44,16 +44,13 @@ jobs:
         run: Rscript -e "install.packages('shiny')"
 
       - name: Verify shiny is installed
-        shell: cmd
-        run: |-
-          "C:\Program Files\R\R-3.6.1\bin\Rscript.exe" -e "print(asNamespace('shiny'))"
+        run: Rscript -e "print(asNamespace('shiny'))"
 
       - name: Install Package Dependencies
-        shell: cmd
         run: |-
-          "C:\Program Files\R\R-3.6.1\bin\Rscript.exe" -e "install.packages('remotes')"
-          REM "C:\Program Files\R\R-3.6.1\bin\Rscript.exe" -e "remotes::install_deps(dependencies = TRUE)"
-          "C:\Program Files\R\R-3.6.1\bin\Rscript.exe" -e "remotes::install_cran('devtools')"
+          Rscript -e "install.packages('remotes')"
+          Rscript -e "remotes::install_deps(dependencies = TRUE)"
+          Rscript -e "remotes::install_cran('devtools')"
 
       - name: "devtools::check()"
         if: false
