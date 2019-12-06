@@ -60,4 +60,8 @@ jobs:
 
       - name: Run shinytest
         run: |-
-          Rscript -e "shinytest::testApp('001-hello')"
+          Rscript -e "expect_pass(shinytest::testApp('001-hello'))"
+
+      - name: Set up path for Post Cache R library
+        if: runner.os == 'Windows'
+        run:
