@@ -49,12 +49,4 @@ jobs:
       - name: Install Package Dependencies
         run: |-
           Rscript -e "install.packages('remotes')"
-          Rscript -e "remotes::install_deps(dependencies = TRUE)"
           Rscript -e "remotes::install_cran('devtools')"
-
-      - name: "devtools::check()"
-        if: false
-        shell: cmd
-        run: |-
-          "C:\Program Files\R\R-3.6.1\bin\Rscript.exe" -e "devtools::check(error_on = 'note', run_dont_test = TRUE, cran = TRUE, remote = FALSE)"
-
