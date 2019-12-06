@@ -19,7 +19,7 @@ jobs:
       CRAN: ${{ matrix.config.cran }}
 
     steps:
-    
+
       - uses: actions/checkout@v1
 
       - name: Display PATH
@@ -28,7 +28,7 @@ jobs:
       - uses: r-lib/actions/setup-r@master
         with:
           r-version: ${{ matrix.config.r }}
-    
+
       - name: R Options
         shell: bash
         run: |-
@@ -56,3 +56,7 @@ jobs:
         run: |-
           Rscript -e "install.packages('remotes')"
           Rscript -e "remotes::install_cran(c('devtools', 'shiny', 'shinytest'))"
+
+      - name: Run shinytest
+        run: |-
+          Rscript -e "shinytest::testApp('001-hello')"
