@@ -19,6 +19,10 @@ jobs:
       CRAN: ${{ matrix.config.cran }}
 
     steps:
+      - name: Windows setup
+        if: runner.os == 'Windows'
+        run:
+          git config --global core.autocrlf false
 
       - uses: actions/checkout@v1
 
