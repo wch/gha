@@ -3,53 +3,61 @@ name: CI
 on: [push]
 
 jobs:
-  build:
+  TEST:
 
     runs-on: windows-latest
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+        - { os: windows-latest, r: '3.6'}
+
+    env:
+      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
+      CRAN: ${{ matrix.config.cran }}
 
     steps:
     
-    - uses: actions/checkout@v1
+      - uses: actions/checkout@v1
     
-    - name: Install R
-      run: choco install r.project
+      - uses: r-lib/actions/setup-r@master
+        with:
+          r-version: ${{ matrix.config.r }}
     
-    - name: R Options
-      shell: bash
-      run: |-
-        echo 'MAKE=make -j2' >> .Renviron
-        mkdir ~/R_LIB
-        echo 'R_LIBS=~/R_LIB' >> .Renviron
-        echo 'options(repos = c(CRAN = "https://cloud.r-project.org"))' >> .Rprofile
-    
-    - name: Cache R library
-      uses: actions/cache@v1
-      with:
-        path: "~/R_LIB"
-        key: ${{ runner.OS }}-library-${{ hashFiles('**/DESCRIPTION') }}
-        restore-keys: |-
-          ${{ runner.OS }}-library-
-    
-    - name: Install shiny
-      shell: cmd
-      run: |-
-        "C:\Program Files\R\R-3.6.1\bin\Rscript.exe" -e "install.packages('shiny')"
-    
-    - name: Verify shiny is installed
-      shell: cmd
-      run: |-
-        "C:\Program Files\R\R-3.6.1\bin\Rscript.exe" -e "print(asNamespace('shiny'))"
+      - name: R Options
+        shell: bash
+        run: |-
+          echo 'MAKE=make -j2' >> .Renviron
+          mkdir ~/R_LIB
+          echo 'R_LIBS=~/R_LIB' >> .Renviron
+          echo 'options(repos = c(CRAN = "https://cloud.r-project.org"))' >> .Rprofile
 
-    - name: Install Package Dependencies
-      shell: cmd
-      run: |-
-        "C:\Program Files\R\R-3.6.1\bin\Rscript.exe" -e "install.packages('remotes')"
-        REM "C:\Program Files\R\R-3.6.1\bin\Rscript.exe" -e "remotes::install_deps(dependencies = TRUE)"
-        "C:\Program Files\R\R-3.6.1\bin\Rscript.exe" -e "remotes::install_cran('devtools')"
+      - name: Cache R library
+        uses: actions/cache@v1
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ hashFiles('**/DESCRIPTION') }}
 
-    - name: "devtools::check()"
-      if: false
-      shell: cmd
-      run: |-
-        "C:\Program Files\R\R-3.6.1\bin\Rscript.exe" -e "devtools::check(error_on = 'note', run_dont_test = TRUE, cran = TRUE, remote = FALSE)"
+      - name: Install shiny
+        run: Rscript -e "install.packages('shiny')"
+
+      - name: Verify shiny is installed
+        shell: cmd
+        run: |-
+          "C:\Program Files\R\R-3.6.1\bin\Rscript.exe" -e "print(asNamespace('shiny'))"
+
+      - name: Install Package Dependencies
+        shell: cmd
+        run: |-
+          "C:\Program Files\R\R-3.6.1\bin\Rscript.exe" -e "install.packages('remotes')"
+          REM "C:\Program Files\R\R-3.6.1\bin\Rscript.exe" -e "remotes::install_deps(dependencies = TRUE)"
+          "C:\Program Files\R\R-3.6.1\bin\Rscript.exe" -e "remotes::install_cran('devtools')"
+
+      - name: "devtools::check()"
+        if: false
+        shell: cmd
+        run: |-
+          "C:\Program Files\R\R-3.6.1\bin\Rscript.exe" -e "devtools::check(error_on = 'note', run_dont_test = TRUE, cran = TRUE, remote = FALSE)"
 
