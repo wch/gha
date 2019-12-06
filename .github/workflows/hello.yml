@@ -63,3 +63,13 @@ jobs:
         run: |-
           Rscript -e "library(shinytest); expect_pass(testApp('001-hello'))"
           Rscript -e "shinytest::viewTestDiff('001-hello')"
+
+      - name: Create results artifact
+        if: failure()
+        run: tar cvf 001-hello.tar 001-hello/
+
+      - name: Upload test results
+        if: failure()
+        with:
+            name: 001-hello-results
+            path: 001-hello.tar
