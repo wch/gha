@@ -34,7 +34,8 @@ jobs:
           echo 'R_LIBS=~/R_LIB' >> .Renviron
           echo 'options(repos = c(CRAN = "https://cloud.r-project.org"))' >> .Rprofile
 
-      - name: Cache R library
+     - name: Cache R library
+        if: runner.os != 'Windows'
         uses: actions/cache@v1
         with:
           path: ${{ env.R_LIBS_USER }}
@@ -61,7 +62,3 @@ jobs:
       - name: Run shinytest
         run: |-
           Rscript -e "expect_pass(shinytest::testApp('001-hello'))"
-
-      - name: Set up path for Post Cache R library
-        if: runner.os == 'Windows'
-        run:
