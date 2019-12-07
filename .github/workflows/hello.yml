@@ -65,6 +65,7 @@ jobs:
       - name: Create plot
         run: |-
           Rscript -e "png('001-hello/test.png'); plot(1:10, 1:10); dev.off()"
+          Rscript -e "png('001-hello/test72.png', res=72); plot(1:10, 1:10); dev.off()"
 
       - name: Upload test results
         uses: actions/upload-artifact@v1
