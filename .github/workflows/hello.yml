@@ -35,6 +35,9 @@ jobs:
           path: foo
           key: ${{ runner.os }}-r-${{ matrix.config.r }}-foo
 
+      - name: Display PATH
+        run: $env:path -split ";"
+
 
       # - name: Windows setup
       #   if: runner.os == 'Windows'
