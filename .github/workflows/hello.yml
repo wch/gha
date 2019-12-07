@@ -43,6 +43,7 @@ jobs:
         with:
           path: ${{ env.R_LIBS_USER }}
           key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ hashFiles('**/DESCRIPTION') }}
+          restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-
 
       - name: Install Packages
         run: |-
@@ -66,6 +67,10 @@ jobs:
 
       - name: Fix path for Windows caching
         if: runner.os == 'Windows'
+        # This is needed because if you use the default tar at this stage,
+        # C:/Rtools/bin/tar.exe, it will say that it can't find gzip.exe. So
+        # we'll just set the path so that the original tar that would be
+        # found, will be found.
         run: |-
           echo "::add-path::C:/Program Files/Git/usr/bin"
-          $env:path -split ";"
+          echo $env:path -split ";"
