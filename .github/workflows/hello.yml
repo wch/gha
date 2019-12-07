@@ -62,6 +62,10 @@ jobs:
           Rscript -e "library(shinytest); expect_pass(testApp('001-hello'))"
           Rscript -e "shinytest::viewTestDiff('001-hello')"
 
+      - name: Create plot
+        run: |-
+          Rscript -e "png('001-hello/test.png'); plot(1:10, 1:10); dev.off()"
+
       - name: Upload test results
         uses: actions/upload-artifact@v1
         with:
