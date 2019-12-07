@@ -19,12 +19,11 @@ jobs:
       CRAN: ${{ matrix.config.cran }}
 
     steps:
-      - name: Windows setup
-        if: runner.os == 'Windows'
-        run:
-          git config --global core.autocrlf false
 
-      - uses: actions/checkout@v1
+      - name: Fix path for Windows caching
+        if: runner.os == 'Windows'
+        run: echo "::add-path::C:/Program Files/Git/usr/bin"
+
 
       - name: Make test directory
         run: mkdir foo
@@ -35,6 +34,14 @@ jobs:
         with:
           path: foo
           key: ${{ runner.os }}-r-${{ matrix.config.r }}-foo
+
+
+      # - name: Windows setup
+      #   if: runner.os == 'Windows'
+      #   run:
+      #     git config --global core.autocrlf false
+
+      # - uses: actions/checkout@v1
 
       # - uses: r-lib/actions/setup-r@master
       #   with:
