@@ -26,14 +26,6 @@ jobs:
 
       - uses: actions/checkout@v1
 
-      - name: Cache PhantomJS (Windows)
-        uses: actions/cache@v1
-        if: runner.os == 'Windows'
-        with:
-          path: $APPDATA/PhantomJS
-          key: ${{ runner.os }}-phantomjs
-          restore-keys: ${{ runner.os }}-phantomjs
-
       - uses: r-lib/actions/setup-r@master
         with:
           r-version: ${{ matrix.config.r }}
@@ -57,6 +49,18 @@ jobs:
         run: |-
           Rscript -e "if (system.file(package = 'remotes') == '') install.packages('remotes')"
           Rscript -e "remotes::install_cran(c('shiny', 'shinytest'))"
+
+      - name: Find PhantomJS path for caching
+        run: |
+          echo "::set-env name=PHANTOM_PATH::$(Rscript -e 'cat(shinytest::phantom_paths()[[1]])')"
+
+      - name: Cache PhantomJS (Windows)
+        uses: actions/cache@v1
+        if: runner.os == 'Windows'
+        with:
+          path: ${{ env.PHANTOM_PATH }}
+          key: ${{ runner.os }}-phantomjs
+          restore-keys: ${{ runner.os }}-phantomjs
 
       - name: Install PhantomJS
         run: |-
