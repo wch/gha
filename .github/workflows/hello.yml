@@ -50,9 +50,17 @@ jobs:
           Rscript -e "if (system.file(package = 'remotes') == '') install.packages('remotes')"
           Rscript -e "remotes::install_cran(c('shiny', 'shinytest'))"
 
-      - name: Install shinytest system dependencies
+      - name: Cache PhantomJS (Windows)
+        uses: actions/cache@v1
+        if: runner.os == 'Windows'
+        with:
+          path: ${{ env.APPDATA }}/PhantomJS
+          key: ${{ runner.os }}-phantomjs
+          restore-keys: ${{ runner.os }}-phantomjs
+
+      - name: Install PhantomJS
         run: |-
-          Rscript -e "shinytest::installDependencies()"
+          Rscript -e "if (!shinytest::dependenciesInstalled()) shinytest::installDependencies()"
 
       - name: Run shinytest
         run: |-
