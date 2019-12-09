@@ -48,7 +48,8 @@ jobs:
       - name: Install Packages
         run: |-
           Rscript -e "if (system.file(package = 'remotes') == '') install.packages('remotes')"
-          Rscript -e "remotes::install_cran(c('shiny', 'shinytest'))"
+          Rscript -e "remotes::install('shiny')"
+          Rscript -e "remotes::install_github('shinytest')"
 
       - name: Find PhantomJS path for caching
         run: |
