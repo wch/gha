@@ -47,7 +47,7 @@ jobs:
 
       - name: Install Packages
         run: |-
-          Rscript -e "install.packages('remotes')"
+          Rscript -e "if (system.file(package = 'remotes') == '') install.packages('remotes')"
           Rscript -e "remotes::install_cran(c('shiny', 'shinytest'))"
 
       - name: Install shinytest system dependencies
@@ -62,8 +62,8 @@ jobs:
       - name: Upload test results
         uses: actions/upload-artifact@v1
         with:
-            name: 001-hello-results
-            path: 001-hello
+          name: 001-hello-results
+          path: 001-hello
 
       - name: Fix path for Windows caching
         if: runner.os == 'Windows'
