@@ -52,7 +52,7 @@ jobs:
 
       - name: Find PhantomJS path for caching
         run: |
-          echo "::set-env name=PHANTOM_PATH::$(Rscript -e 'cat(shinytest::phantom_paths()[[1]])')"
+          echo "::set-env name=PHANTOM_PATH::$(Rscript -e 'cat(shinytest:::phantom_paths()[[1]])')"
 
       - name: Cache PhantomJS (Windows)
         uses: actions/cache@v1
