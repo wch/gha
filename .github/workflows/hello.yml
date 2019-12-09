@@ -51,15 +51,16 @@ jobs:
           Rscript -e "remotes::install_cran('shiny')"
           Rscript -e "remotes::install_github('rstudio/shinytest')"
 
-      - name: Find PhantomJS path for caching
+      - name: Find PhantomJS path
+        id: phantomjs
         run: |
-          echo "::set-env name=PHANTOM_PATH::$(Rscript -e 'cat(shinytest:::phantom_paths()[[1]])')"
+          echo "::set-output name=path::$(Rscript -e 'cat(shinytest:::phantom_paths()[[1]])')"
 
       - name: Cache PhantomJS (Windows)
         uses: actions/cache@v1
         if: runner.os == 'Windows'
         with:
-          path: ${{ env.PHANTOM_PATH }}
+          path: ${{ steps.phantomjs.outputs.path }}
           key: ${{ runner.os }}-phantomjs
           restore-keys: ${{ runner.os }}-phantomjs
 
