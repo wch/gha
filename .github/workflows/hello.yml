@@ -19,11 +19,6 @@ jobs:
       CRAN: ${{ matrix.config.cran }}
 
     steps:
-      - name: Test multiline
-        run: >
-          echo 1
-          2
-
       - name: Windows setup
         if: runner.os == 'Windows'
         run:
