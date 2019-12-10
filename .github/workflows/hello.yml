@@ -22,7 +22,7 @@ jobs:
       - name: Test multiline
         run: >
           echo 1
-               2
+          2
 
       - name: Windows setup
         if: runner.os == 'Windows'
@@ -58,9 +58,9 @@ jobs:
       - name: Install Packages
         run: >
           Rscript -e "if (system.file(package = 'remotes') == '') install.packages('remotes')"
-                  -e "remotes::install_cran('shiny')"
-                  -e "remotes::install_github('rstudio/shinytest')"
-                  -e "update.packages()"
+          -e "remotes::install_cran('shiny')"
+          -e "remotes::install_github('rstudio/shinytest')"
+          -e "update.packages()"
 
       - name: Find PhantomJS path
         id: phantomjs
@@ -82,7 +82,7 @@ jobs:
       - name: Run shinytest
         run: >
           Rscript -e "library(shinytest); expect_pass(testApp('001-hello'))"
-                  -e "shinytest::viewTestDiff('001-hello')"
+          -e "shinytest::viewTestDiff('001-hello')"
 
       - name: Upload test results
         uses: actions/upload-artifact@v1
