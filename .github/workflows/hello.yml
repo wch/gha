@@ -63,9 +63,8 @@ jobs:
         run: |
           echo "::set-output name=path::$(Rscript -e 'cat(shinytest:::phantom_paths()[[1]])')"
 
-      - name: Cache PhantomJS (Windows)
+      - name: Cache PhantomJS
         uses: actions/cache@v1
-        if: runner.os == 'Windows'
         with:
           path: ${{ steps.phantomjs.outputs.path }}
           key: ${{ runner.os }}-phantomjs
