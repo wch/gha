@@ -95,6 +95,3 @@ jobs:
         # we'll just set the path so that the original tar that would be
         # found, will be found.
         run: echo "::add-path::C:/Program Files/Git/usr/bin"
-
-      - name: Display path
-        run: $env:path -split ";"
