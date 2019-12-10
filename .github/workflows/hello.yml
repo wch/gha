@@ -19,7 +19,7 @@ jobs:
       CRAN: ${{ matrix.config.cran }}
 
     steps:
-      - name: Windows setup
+      - name: Windows git setup
         if: runner.os == 'Windows'
         run:
           git config --global core.autocrlf false
@@ -76,8 +76,10 @@ jobs:
 
       - name: Run shinytest
         run: >
-          Rscript -e "library(shinytest); expect_pass(testApp('001-hello'))"
-          -e "shinytest::viewTestDiff('001-hello')"
+          Rscript -e "library(shinytest)"
+          -e "suffix <- switch('${{ runner.os }}', macOS='mac', Windows='win', Linux='linux')"
+          -e "expect_pass(testApp('001-hello', suffix=suffix))"
+          -e "viewTestDiff('001-hello', suffix=suffix))"
 
       - name: Upload test results
         uses: actions/upload-artifact@v1
