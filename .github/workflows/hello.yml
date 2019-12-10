@@ -32,7 +32,7 @@ jobs:
 
       - name: R Options
         shell: bash
-        run: |-
+        run: |
           echo 'MAKE=make -j2' >> .Renviron
           mkdir ~/R_LIB
           echo 'R_LIBS=~/R_LIB' >> .Renviron
@@ -42,17 +42,20 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ hashFiles('**/DESCRIPTION') }}
-          restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-
+          # Use the git SHA that triggered this action. For the purposes here,
+          # it is essentially a nonce. Before the packages are installed, we
+          # can't know what all the package versions will be after they're
+          # installed, so we will just use the most recent cache (on this
+          # branch), and then update packages afterward.
+          key: ${{ runner.os }}-r-${{ matrix.config.r }}-lib-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-lib-
 
       - name: Install Packages
-        run: |-
+        run: |
           Rscript -e "if (system.file(package = 'remotes') == '') install.packages('remotes')"
           Rscript -e "remotes::install_cran('shiny')"
-
-      - name: Install shinytest
-        run: |-
           Rscript -e "remotes::install_github('rstudio/shinytest')"
+          Rscript -e "update.packages()"
 
       - name: Find PhantomJS path
         id: phantomjs
