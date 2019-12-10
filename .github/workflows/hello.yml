@@ -20,7 +20,7 @@ jobs:
 
     steps:
       - name: Test multiline
-        run: |
+        run: >
           echo 1
                2
 
@@ -56,7 +56,7 @@ jobs:
           restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-lib-
 
       - name: Install Packages
-        run: |
+        run: >
           Rscript -e "if (system.file(package = 'remotes') == '') install.packages('remotes')"
                   -e "remotes::install_cran('shiny')"
                   -e "remotes::install_github('rstudio/shinytest')"
@@ -80,8 +80,8 @@ jobs:
           Rscript -e "if (!shinytest::dependenciesInstalled()) shinytest::installDependencies()"
 
       - name: Run shinytest
-        run: |
-          Rscript -e "library(shinytest); expect_pass(testApp('001-hello'))" \
+        run: >
+          Rscript -e "library(shinytest); expect_pass(testApp('001-hello'))"
                   -e "shinytest::viewTestDiff('001-hello')"
 
       - name: Upload test results
