@@ -52,11 +52,11 @@ jobs:
           restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-lib-
 
       - name: Install Packages
-        run: >
-          Rscript -e "if (system.file(package = 'remotes') == '') install.packages('remotes')"
-          -e "remotes::install_cran('shiny')"
-          -e "remotes::install_github('rstudio/shinytest')"
-          -e "remotes::update_packages()"
+        run: |
+          Rscript -e "if (system.file(package = 'remotes') == '') install.packages('remotes')
+          remotes::install_cran('shiny')
+          remotes::install_github('rstudio/shinytest')
+          remotes::update_packages()"
 
       - name: Find PhantomJS path
         id: phantomjs
