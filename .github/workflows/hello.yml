@@ -25,7 +25,7 @@ jobs:
         run:
           git config --global core.autocrlf false
 
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
 
       - uses: r-lib/actions/setup-r@master
         with:
@@ -34,10 +34,7 @@ jobs:
       - name: R Options
         shell: bash
         run: |
-          echo 'MAKE=make -j2' >> .Renviron
-          mkdir ~/R_LIB
-          echo 'R_LIBS=~/R_LIB' >> .Renviron
-          echo 'options(repos = c(CRAN = "https://cloud.r-project.org"))' >> .Rprofile
+          echo 'MAKEFLAGS=-j2' >> .Renviron
 
       - name: Cache R library
         uses: actions/cache@v1
@@ -75,6 +72,7 @@ jobs:
           Rscript -e "if (!shinytest::dependenciesInstalled()) shinytest::installDependencies()"
 
       - name: Run shinytest
+        shell: bash
         run: |
           Rscript -e "library(shinytest)
           suffix <- switch('${{ runner.os }}', macOS='mac', Windows='win', Linux='linux')
