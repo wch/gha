@@ -72,7 +72,6 @@ jobs:
           Rscript -e "if (!shinytest::dependenciesInstalled()) shinytest::installDependencies()"
 
       - name: Run shinytest
-        shell: bash
         run: >
           Rscript -e "library(shinytest)"
           -e "suffix <- switch('${{ runner.os }}', macOS='mac', Windows='win', Linux='linux')"
