@@ -49,11 +49,11 @@ jobs:
           restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-lib-
 
       - name: Install Packages
-        run: |
-          Rscript -e "if (system.file(package = 'remotes') == '') install.packages('remotes')
-          remotes::install_cran('shiny')
-          remotes::install_github('rstudio/shinytest')
-          remotes::update_packages()"
+        run: >
+          Rscript -e "if (system.file(package = 'remotes') == '') install.packages('remotes')"
+          -e "remotes::install_cran('shiny')"
+          -e "remotes::install_github('rstudio/shinytest')"
+          -e "remotes::update_packages()"
 
       - name: Find PhantomJS path
         id: phantomjs
@@ -73,11 +73,11 @@ jobs:
 
       - name: Run shinytest
         shell: bash
-        run: |
-          Rscript -e "library(shinytest)
-          suffix <- switch('${{ runner.os }}', macOS='mac', Windows='win', Linux='linux')
-          expect_pass(testApp('001-hello', suffix=suffix))
-          viewTestDiff('001-hello', suffix=suffix)"
+        run: >
+          Rscript -e "library(shinytest)"
+          -e "suffix <- switch('${{ runner.os }}', macOS='mac', Windows='win', Linux='linux')"
+          -e "expect_pass(testApp('001-hello', suffix=suffix))"
+          -e "viewTestDiff('001-hello', suffix=suffix)"
 
       - name: Upload test results
         uses: actions/upload-artifact@v1
